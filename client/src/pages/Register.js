@@ -1,11 +1,15 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../context/auth/authContext";
 
-const Register = () => {
+const Register = props => {
+	useEffect(() => {
+		if (isAuthenticated) return props.history.push("/login");
+	}, []);
+
 	const {
 		register,
-		state: { error }
+		state: { error, isAuthenticated }
 	} = useContext(AuthContext);
 
 	const [registerInfo, setRegisterInfo] = useState({
@@ -25,12 +29,15 @@ const Register = () => {
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		register({
-			name,
-			email,
-			password,
-			confirmPassword
-		});
+		register(
+			{
+				name,
+				email,
+				password,
+				confirmPassword
+			},
+			props.history
+		);
 	};
 	return (
 		<div className="row">
@@ -73,7 +80,7 @@ const Register = () => {
 					<div className="form-group">
 						<label htmlFor="password">Password</label>
 						<input
-							type="text"
+							type="password"
 							className={
 								error.password ? "form-control is-invalid" : "form-control"
 							}
@@ -89,7 +96,7 @@ const Register = () => {
 					<div className="form-group">
 						<label htmlFor="confirmPassword">Confirm Password</label>
 						<input
-							type="text"
+							type="password"
 							className={
 								error.confirmPassword
 									? "form-control is-invalid"
@@ -104,6 +111,11 @@ const Register = () => {
 						<div className="invalid-feedback">{error.confirmPassword}</div>
 					</div>
 					<Link to="/login">Already Have An Account? Login Here</Link>
+					{error.msg && (
+						<div className="alert alert-danger my-3">
+							{error.msg && error.msg}
+						</div>
+					)}
 					<button className="btn btn-primary d-block my-3">Register</button>
 				</form>
 			</div>

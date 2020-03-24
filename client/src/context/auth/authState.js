@@ -14,14 +14,14 @@ const AuthContextProvider = props => {
 
 	const [state, dispatch] = useReducer(authReducer, initialState);
 
-	const register = async user => {
+	const register = async (user, history) => {
 		try {
 			const res = await axios.post("/api/users/register", user, {
 				headers: {
 					"Content-Type": "application/json"
 				}
 			});
-			console.log(res);
+			history.push("/login");
 		} catch (error) {
 			dispatch({ type: USERS_ERROR, payload: { error: error.response.data } });
 		}
