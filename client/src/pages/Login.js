@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 const Login = () => {
 	const [loginInfo, setLoginInfo] = useState({
@@ -50,7 +51,7 @@ const Login = () => {
 						/>
 					</div>
 					<Link to="/register">Don't Have Account? Register Here</Link>
-					<button className="btn btn-primary d-block my-3">Login</button>
+					<button className="btn btn-primary d-block py-3">Login</button>
 				</form>
 			</div>
 		</div>

@@ -22,7 +22,7 @@ const validate = user => {
 	if (!user.confirmPassword) {
 		error.confirmPassword = "Please Provide Confirmation password";
 	} else if (user.password !== user.confirmPassword) {
-		error.password = "Password Doesn't Match";
+		error.confirmPassword = "Password Doesn't Match";
 	}
 
 	return {
