@@ -5,6 +5,12 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AuthContextProvider from "./context/auth/authState";
+import setAuthToken from "./utils/setAuthToken";
+
+/*global localStorage*/
+if (localStorage.auth_token) {
+	setAuthToken(localStorage.auth_token);
+}
 
 function App() {
 	return (

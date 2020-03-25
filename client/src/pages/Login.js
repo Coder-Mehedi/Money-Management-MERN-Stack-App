@@ -1,14 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import AuthContext from "../context/auth/authContext";
 
-const Login = () => {
+const Login = props => {
+	useEffect(() => {
+		if (checkLoggedInOrNot()) {
+			props.history.push("/");
+		}
+	}, []);
+	const {
+		login,
+		state: { error },
+		checkLoggedInOrNot
+	} = useContext(AuthContext);
+
 	const [loginInfo, setLoginInfo] = useState({
 		email: "",
-		password: "",
-		error: {}
+		password: ""
 	});
-	const { email, password, error } = loginInfo;
+
+	const { email, password } = loginInfo;
+
 	const handleChange = e => {
 		setLoginInfo({
 			...loginInfo,
@@ -18,6 +30,7 @@ const Login = () => {
 
 	const handleSubmit = e => {
 		e.preventDefault();
+		login({ email, password }, props.history);
 	};
 	return (
 		<div className="row">
@@ -28,7 +41,9 @@ const Login = () => {
 						<label htmlFor="email">email</label>
 						<input
 							type="text"
-							className="form-control"
+							className={
+								error.email ? "form-control is-invalid" : "form-control"
+							}
 							placeholder="Enter Your Email"
 							email="email"
 							id="email"
@@ -36,22 +51,32 @@ const Login = () => {
 							value={email}
 							onChange={handleChange}
 						/>
+						<div className="invalid-feedback">{error.email}</div>
 					</div>
 
 					<div className="form-group">
 						<label htmlFor="password">Password</label>
 						<input
-							type="text"
-							className="form-control"
+							type="password"
+							className={
+								error.password ? "form-control is-invalid" : "form-control"
+							}
 							placeholder="Enter Your Password"
 							name="password"
 							id="password"
 							onChange={handleChange}
 							value={password}
 						/>
+						<div className="invalid-feedback">{error.password}</div>
 					</div>
-					<Link to="/register">Don't Have Account? Register Here</Link>
-					<button className="btn btn-primary d-block py-3">Login</button>
+
+					<Link to="/register">Don't Have An Account? Register Here</Link>
+					{error.msg && (
+						<div className="alert alert-danger my-3">
+							{error.msg && error.msg}
+						</div>
+					)}
+					<button className="btn btn-primary d-block my-3">Login</button>
 				</form>
 			</div>
 		</div>
