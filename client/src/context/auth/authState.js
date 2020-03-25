@@ -55,9 +55,15 @@ const AuthContextProvider = props => {
 		}
 	};
 
+	const logout = history => {
+		localStorage.removeItem("auth_token");
+		history.push("/login");
+		return dispatch({ type: SET_USER, payload: { user: {} } });
+	};
+
 	return (
 		<AuthContext.Provider
-			value={{ state, register, login, checkLoggedInOrNot }}
+			value={{ state, register, login, checkLoggedInOrNot, logout }}
 		>
 			{props.children}
 		</AuthContext.Provider>

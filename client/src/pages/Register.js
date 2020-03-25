@@ -4,12 +4,13 @@ import AuthContext from "../context/auth/authContext";
 
 const Register = props => {
 	useEffect(() => {
-		if (isAuthenticated) return props.history.push("/login");
+		if (checkLoggedInOrNot()) return props.history.push("/");
 	}, []);
 
 	const {
 		register,
-		state: { error, isAuthenticated }
+		state: { error },
+		checkLoggedInOrNot
 	} = useContext(AuthContext);
 
 	const [registerInfo, setRegisterInfo] = useState({
